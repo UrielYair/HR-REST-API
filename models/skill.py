@@ -23,9 +23,10 @@ class Skill(db.Model):
 class SkillSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Skill
+        fields = ('skill_id', 'name', 'links', 'skills')
         include_fk = True
 
-    _links = ma.Hyperlinks(
+    links = ma.Hyperlinks(
         {
             "self": ma.URLFor("skill_blueprint.skill_detail", values=dict(id="<skill_id>")),
             "collection": ma.URLFor("skill_blueprint.skills"),
