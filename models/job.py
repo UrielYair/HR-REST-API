@@ -24,10 +24,11 @@ class Job(db.Model):
 class JobSchema(ma.SQLAlchemySchema):
     class Meta:
         model = Job
+        fields = ('job_id', 'title', 'skills', 'links', 'skills')
         include_fk = True
 
     skills = ma.List(ma.HyperlinkRelated("skill_blueprint.skill_detail"))
-    _links = ma.Hyperlinks(
+    links = ma.Hyperlinks(
         {
             "self": ma.URLFor("job_blueprint.job_detail", values=dict(id="<job_id>")),
             "collection": ma.URLFor("job_blueprint.jobs"),
