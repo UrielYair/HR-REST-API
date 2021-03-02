@@ -7,24 +7,29 @@ from models.skill import Skill, SkillSchema, skill_schema, skills_schema
 from models.database import db, ma
 from models.linking_tables import job_requirements, candidate_skills
 
+from flasgger import swag_from
+
 candidate_blueprint = Blueprint('candidate_blueprint', __name__)
 
 ##### candidates #####
 
 
 @ candidate_blueprint.route("/candidates/")
+@ swag_from('candidates.yaml')
 def candidates():
     all_candidates = Candidate.query.all()
     return jsonify(candidates_schema.dump(all_candidates))
 
 
 @ candidate_blueprint.route("/candidates/<int:id>")
+@ swag_from('candidate_detail.yaml')
 def candidate_detail(id):
     candidate = Candidate.query.get_or_404(id)
     return candidate_schema.dump(candidate)
 
 
 @ candidate_blueprint.route('/candidates/<string:candidate_title>')
+@ swag_from('show_candidate.yaml')
 def show_candidate(candidate_title):
     found_candidate = Candidate.query.filter_by(
         title=candidate_title).first_or_404(
@@ -33,6 +38,7 @@ def show_candidate(candidate_title):
 
 
 @ candidate_blueprint.route('/candidate', methods=['POST'])
+@ swag_from('candidate.yaml')
 def candidate():
 
     # {
@@ -67,6 +73,7 @@ def candidate():
 
 
 @ candidate_blueprint.route('/candidates/find_by_job_title/<string:job_name>')
+@ swag_from('find_candidate_by_job_name.yaml')
 def find_candidate_by_job_name(job_name):
     job_to_find_candidates_for = Job.query.filter_by(
         title=job_name).first_or_404(job_name, description='job name not exist')
@@ -77,6 +84,7 @@ def find_candidate_by_job_name(job_name):
 
 
 @ candidate_blueprint.route('/candidates/find_by_job_id/<int:job_id>')
+@ swag_from('find_candidate_by_job_id.yaml')
 def find_candidate_by_job_id(job_id):
     job_to_find_candidates_for = Job.query.get_or_404(
         job_id, description='job id not exist')
