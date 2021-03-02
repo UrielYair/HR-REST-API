@@ -1,0 +1,9 @@
+get list of all jobs in the database
+---
+tags:
+    - jobs
+responses:
+    '200':
+        description: successful operation
+    '400':
+        description: Invalid request

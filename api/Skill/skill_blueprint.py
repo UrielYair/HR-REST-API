@@ -7,23 +7,28 @@ from models.skill import Skill, SkillSchema, skill_schema, skills_schema
 from models.database import db, ma
 from models.linking_tables import job_requirements, candidate_skills
 
+from flasgger import swag_from
+
 skill_blueprint = Blueprint('skill_blueprint', __name__)
 
 
 ##### skills #####
 @ skill_blueprint.route("/skills/")
+@ swag_from('skills.yaml')
 def skills():
     all_skills = Skill.query.all()
     return jsonify(skills_schema.dump(all_skills))
 
 
 @ skill_blueprint.route("/skills/<int:id>")
+@ swag_from('skill_detail.yaml')
 def skill_detail(id):
     skill = Skill.query.get_or_404(id)
     return skill_schema.dump(skill)
 
 
 @ skill_blueprint.route('/skills/<string:skill_name>')
+@ swag_from('show_skill.yaml')
 def show_skill(skill_name):
     found_skill = Skill.query.filter_by(name=skill_name).first_or_404(
         description='There is no data with - {}'.format(skill_name))
@@ -31,6 +36,7 @@ def show_skill(skill_name):
 
 
 @ skill_blueprint.route('/skill/<int:skill_id>', methods=['DELETE'])
+@ swag_from('delete_skill.yaml')
 def delete_skill(skill_id):
     skill = Skill.query.get_or_404(skill_id)
     db.session.delete(skill)
