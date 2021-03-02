@@ -1,0 +1,12 @@
+get details about candidate
+---
+tags:
+    - candidates
+parameters:
+    - in: path
+      name: id
+      type: integer
+      required: true
+responses:
+    200:
+        description: OK.

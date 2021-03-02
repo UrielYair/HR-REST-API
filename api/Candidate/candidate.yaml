@@ -1,0 +1,28 @@
+create new candidate
+---
+tags:
+    - candidates
+produces:
+    - application/json
+parameters:
+    - in: body
+      name: body
+      required: true
+      schema:
+          type: object
+          properties:
+              candidate_name:
+                  type: string
+                  description: Candidate name.
+                  example: Uriel
+              candidate_skills:
+                  type: array
+                  items:
+                      type: string
+                  description: candidate skills
+                  example: ['Python', 'Java', 'SQL', 'Databases', 'JavaScript']
+responses:
+    '200':
+        description: successful operation
+    '400':
+        description: Invalid request
